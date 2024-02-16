@@ -20,6 +20,15 @@
       durationInMinutes: 25,
     };
   }
+
+  function deleteTask(id: number) {
+    if(tasks.length === 1) {
+      tasks = []
+      return;
+    }
+
+    tasks = tasks.splice(id, 1);
+  }
 </script>
 
 <main>
@@ -43,8 +52,8 @@
     <button type="button" on:click={addTaskToList}>Add Task</button>
   </div>
 
-  {#each tasks as task}
-    <Task {task} />
+  {#each tasks as task, index}
+    <Task {task} deleteHook={() => deleteTask(index)} />
   {/each}
 </main>
 

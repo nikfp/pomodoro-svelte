@@ -2,11 +2,17 @@
   import type { TaskTimer } from "./stores/task";
 
   export let task: TaskTimer;
+  export let deleteHook: () => void;
 
   const { durationInSeconds, startTimer, stopTimer, title } = task;
 
   $: taskMinutes = Math.floor($durationInSeconds / 60);
   $: taskSeconds = $durationInSeconds % 60;
+
+  function handleDelete() {
+    stopTimer();
+    deleteHook();
+  }
 </script>
 
 <div class="task">
@@ -14,6 +20,7 @@
   <p>{taskMinutes}:{taskSeconds}</p>
   <button type="button" on:click={startTimer}>Start Timer</button>
   <button type="button" on:click={stopTimer}>Stop Timer</button>
+  <button type="button" on:click={handleDelete}>Delete Timer</button>
 </div>
 
 <style>
