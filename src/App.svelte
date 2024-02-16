@@ -1,8 +1,25 @@
 <script lang="ts">
-  let formValues = {
+  import Task from "./lib/Task.svelte";
+  import { createTask, type TaskTimer, type TaskInfo } from "./lib/stores/task";
+
+  let formValues: TaskInfo = {
     title: "",
-    duration: 25,
+    durationInMinutes: 25,
   };
+
+  let tasks: TaskTimer[] = [];
+
+  function addTaskToList() {
+    const task = createTask(formValues);
+
+    tasks.push(task);
+    tasks = [...tasks];
+
+    formValues = {
+      title: "",
+      durationInMinutes: 25,
+    };
+  }
 </script>
 
 <main>
@@ -21,9 +38,14 @@
       type="number"
       name="duration"
       min="0"
-      bind:value={formValues.duration}
+      bind:value={formValues.durationInMinutes}
     />
+    <button type="button" on:click={addTaskToList}>Add Task</button>
   </div>
+
+  {#each tasks as task}
+    <Task {task} />
+  {/each}
 </main>
 
 <style>

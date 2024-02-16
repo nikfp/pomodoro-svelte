@@ -5,7 +5,7 @@ export type TaskInfo = {
   durationInMinutes: number;
 };
 
-export type Task = ReturnType<typeof createTask>;
+export type TaskTimer = ReturnType<typeof createTask>;
 
 export function createTask(info: TaskInfo) {
   const durationInSeconds = writable(info.durationInMinutes * 60);
