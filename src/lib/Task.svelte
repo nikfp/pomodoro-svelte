@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { TaskTimer } from "./stores/task";
 
   export let task: TaskTimer;
@@ -6,8 +7,13 @@
 
   const { durationInSeconds, startTimer, stopTimer, title } = task;
 
+  onMount(() => {
+    startTimer();
+  });
+
   $: taskMinutes = Math.floor($durationInSeconds / 60);
   $: taskSeconds = $durationInSeconds % 60;
+  $: taskTitle = title.length === 0 ? "Untitled Task" : title;
 
   function handleDelete() {
     stopTimer();
@@ -16,7 +22,7 @@
 </script>
 
 <div class="task">
-  <h3>{title}</h3>
+  <h3>{taskTitle}</h3>
   <p>{taskMinutes}:{taskSeconds}</p>
   <button type="button" on:click={startTimer}>Start Timer</button>
   <button type="button" on:click={stopTimer}>Stop Timer</button>
@@ -28,5 +34,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 2px solid grey;
   }
 </style>
